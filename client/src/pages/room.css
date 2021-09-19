@@ -1,0 +1,14 @@
+#console{
+    height: 40px;
+}
+
+#chat{
+    height: calc(100vh - 40px);
+    overflow-y: scroll;
+
+}
+
+#userList{
+    height: 100vh;
+    overflow-y: scroll;
+}
