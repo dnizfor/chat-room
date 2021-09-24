@@ -7,12 +7,13 @@ Web application that developed by Socket.İO  for chat . Login ,  join to chat o
 ```
 # Clone Repository
 $  git clone https://github.com/dnizfor/file-share
+```
 
 ## Development
 - React js
 - Socket.io
 
-```
+
 ## SS 
 ![](https://user-images.githubusercontent.com/86577022/134747822-45b5729b-37d3-42f0-a227-401961de5c38.png)
 ![](https://user-images.githubusercontent.com/86577022/134747820-6c4af738-f3ae-419a-bd04-ca19edcac864.png)
