@@ -5,15 +5,23 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+let users = []
 
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+  
+  users.push(socket.handshake.query.username)
+
+  io.sockets.emit("users",users)
+
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
       });
     socket.on('disconnect', () => {
-      console.log('user disconnected');
+      let nick = toString(socket.handshake.query.username)
+      let index = users.indexOf(nick);
+      users = users.splice(index,1)
+      io.sockets.emit("users",users)
     });
     socket.on("msg",(msg)=>{
       socket.broadcast.emit("new-msg",msg)

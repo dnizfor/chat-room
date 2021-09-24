@@ -3,22 +3,28 @@ import { useParams } from 'react-router'
 
 import "./room.css"
 
-import { SocketApi, Send ,Listen } from '../Socket'
+import { SocketApi, Send ,Listen,Users } from '../Socket'
 
 export default function Room() {
 
     const [text, setText] = useState("")
     const [chat,setChat] = useState([])
+    const [users,setUsers] = useState([])
+
+    const { id } = useParams()
 
 
     useEffect(() => {
-        SocketApi()
+        SocketApi(id)
         Listen((message)=>{
-            setChat((prevState)=> [...prevState, message])})
+            setChat((prevState)=> [...prevState, message])
+        })
+        Users((u)=>{
+            setUsers(u)
+        })
+        
     },[])
 
-    
-    const { id } = useParams()
 
     const changeHandler = (e) => {
         setText(e.target.value)
@@ -53,7 +59,7 @@ export default function Room() {
                         <div className="col-10">
 
                             {
-                                chat.map(msg=>(<div>{msg} {chat.length}</div>))
+                                chat.map(msg=>(<div><em>@{id} : </em> {msg}</div>))
                             }
                     
 
@@ -67,8 +73,12 @@ export default function Room() {
                           
 
 
-                            <div>@user</div>                    
-
+                            {
+                                users.map(user=>(<div>@{user}</div>    ))
+                            }                
+                            {
+                                console.log(users)
+                            }
 
 
 
