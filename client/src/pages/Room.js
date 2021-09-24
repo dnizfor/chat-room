@@ -17,7 +17,7 @@ export default function Room() {
     useEffect(() => {
         SocketApi(id)
         Listen((message)=>{
-            setChat((prevState)=> [...prevState, message])
+            setChat((prevState)=> [...prevState, {"username" : message.username,"msg" : message.msg}])
         })
         Users((u)=>{
             setUsers(u)
@@ -36,8 +36,8 @@ export default function Room() {
             
         }
         else{
-            Send(text)
-            setChat([...chat,text])
+            Send(text,id)
+            setChat([...chat,{"username" : id,"msg" : text}])
             setText("")
         }
         
@@ -59,7 +59,10 @@ export default function Room() {
                         <div className="col-10">
 
                             {
-                                chat.map(msg=>(<div><em>@{id} : </em> {msg}</div>))
+                                chat.map(msg=>(<div><em>@{msg.username} : </em> {msg.msg}</div>))
+                            }
+                            {
+                                console.log("chatttt",chat)                              
                             }
                     
 
@@ -76,9 +79,7 @@ export default function Room() {
                             {
                                 users.map(user=>(<div>@{user}</div>    ))
                             }                
-                            {
-                                console.log(users)
-                            }
+                          
 
 
 

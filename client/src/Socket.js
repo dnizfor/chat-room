@@ -9,14 +9,15 @@ export const SocketApi = (username)=>{
 })
 }
 
-export const Send = (msg)=>{
-    socket.emit("msg",msg)
+export const Send = (msg,username)=>{
+    socket.emit("msg",{"username": username , "msg":msg})
 }
 
 export const Listen = (calback)=>{
     
     socket.on("new-msg",(msg)=>{
         calback(msg)
+        console.log("msg,aaaa",msg)
         
     })
 }
