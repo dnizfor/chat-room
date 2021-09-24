@@ -7,26 +7,31 @@ const io = new Server(server);
 
 let users = []
 
+let user ;
 
 io.on('connection', (socket) => {
   
-  users.push(socket.handshake.query.username)
+  user= {"username":socket.handshake.query.username,"id":socket.id}
+
+  users.push(user)
 
   io.sockets.emit("users",users)
 
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-      });
-
     socket.on('disconnect', () => {
-      let nick = toString(socket.handshake.query.username)
-      let index = users.indexOf(nick);
+      let index = users.indexOf(user);
       users = users.splice(index,1)
       io.sockets.emit("users",users)
+
     });
 
-    socket.on("msg",(msg)=>{
-      socket.broadcast.emit("new-msg",msg)
+    socket.on("messages",(msg)=>{
+      socket.broadcast.emit("messages",msg)
+    })
+    socket.on("private-message",(data)=>{
+      io.to(data.target).emit('private-message', data)
+      console.log(data)
+     
+      
     })
     
   });

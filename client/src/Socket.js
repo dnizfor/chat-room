@@ -10,14 +10,14 @@ export const SocketApi = (username)=>{
 }
 
 export const Send = (msg,username)=>{
-    socket.emit("msg",{"toWho": "chat" ,"username": username , "msg":msg})
+    socket.emit("messages",{"toWho": "chat" ,"username": username , "msg":msg})
 }
 
 export const Listen = (calback)=>{
     
-    socket.on("new-msg",(msg)=>{
+    socket.on("messages",(msg)=>{
         calback(msg)
-        console.log("msg,aaaa",msg)
+        
         
     })
 }
@@ -25,5 +25,19 @@ export const Listen = (calback)=>{
 export const Users = (callback)=>{
     socket.on("users",(user) =>{
         callback(user)
+    })
+}
+
+export const Private = (target,username,msg)=>{
+    socket.emit('private-message',{"target":target, "username":username,"id": socket.id,"msg": msg});
+    
+   
+    
+}
+export const ListenPrivate = (cb)=>{
+    socket.on('private-message',(data)=>{
+    cb(data)
+
+ 
     })
 }

@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 
 import "./room.css"
 
-import { SocketApi, Send, Listen, Users } from '../Socket'
+import { SocketApi, Send, Listen, Users ,Private,ListenPrivate } from '../Socket'
 
 export default function Room() {
 
@@ -23,11 +23,16 @@ export default function Room() {
             setChat((prevState) => [...prevState, { "toWho": "chat", "username": message.username, "msg": message.msg }])
         })
 
-        Users((u) => {
-            setUsers(u)
+        Users((users) => {
+            setUsers(users)
         })
+        ListenPrivate((data)=>{
+            setChat((prevState)=>[...prevState, { "toWho": data.id, "username": data.username, "msg": data.msg }])
+            addClient({"username": data.username,"id": data.id})
+   
 
-
+        })
+    
 
     }, [])
 
@@ -39,25 +44,37 @@ export default function Room() {
     const submitHandler = (e) => {
         e.preventDefault()
         if (text === "") {
-
+            return
         }
-        else {
+        if (toWho === "chat"){
             Send(text, id)
-            setChat([...chat, { "toWho": "chat", "username": id, "msg": text }])
+            setChat((prevState)=>[...prevState, { "toWho": "chat", "username": id, "msg": text }])
             setText("")
         }
-
-
-
-
+        else{
+            Private(toWho, id,text)
+            setChat((prevState)=>[...prevState, { "toWho": toWho, "username": id, "msg": text }])
+            setText("")
+            
+        }
+        
     }
 
-    const addClient = ({ user }) => {
+    const addClient = (user) => {
         if (clients.includes(user)) {
             return
         }
         setClients([...clients, user])
-        console.log(clients)
+        console.log(user)
+
+   
+    }
+    const removeClient=(client)=>{
+        let newClients = clients.filter(c => c !== client) 
+        setClients(newClients)
+        let newChat = chat.filter(m => m.toWho !== client.id)
+        setChat(newChat)
+
     }
 
     return (
@@ -69,6 +86,8 @@ export default function Room() {
 
                         <div className="col-10 d-flex flex-row ">
 
+                            {/*Contacts*/}
+
                             <button className="btn" onClick={() => {
                                 setToWho("chat")
                             }}>chat</button>
@@ -77,8 +96,8 @@ export default function Room() {
                             {
                                 clients.map(client => (
                                     <button className="btn" onClick={() => {
-                                        setToWho(client)
-                                    }}>{client}</button>
+                                        setToWho(client.id)
+                                    }}>{client.username}<button onClick={()=>removeClient(client)} type="button" class="btn-close" aria-label="Close"></button></button>
                                 ))
                             }
 
@@ -109,7 +128,8 @@ export default function Room() {
 
 
                             {
-                                users.map(user => (<button onClick={() => addClient({ user })} className="btn">@{user}</button >))
+                                users.map(user => (<button onClick={() => addClient( user )} className="btn">@{user.username}</button >))
+              
                             }
 
 
