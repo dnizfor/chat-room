@@ -1,0 +1,18 @@
+#nav{
+    height: 50px;    
+}
+#home{
+    height: calc(100vh - 50px);
+}
+
+@media (max-width:768px)  {
+    #chatImg{
+        width: 50%;
+        margin: auto;
+    
+     
+
+    }
+   
+    
+}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
 
+import ScrollToBottom from 'react-scroll-to-bottom';
+
 import "./room.css"
 
 import { SocketApi, Send, Listen, Users ,Private,ListenPrivate } from '../Socket'
@@ -81,23 +83,27 @@ export default function Room() {
         <div>
 
             <section>
-                <div id="chat" className="container-fluid">
-                    <div className="row">
+                <div  className="container-fluid">
+                    <div  className="row">
 
-                        <div className="col-10 d-flex flex-row ">
+
+                        <div id="contacts" className="col-10 d-flex flex-row overflow-hidden border border-top-0 border-end-0 border-start-0">
 
                             {/*Contacts*/}
 
-                            <button className="btn" onClick={() => {
+                            <button className="btn border" onClick={() => {
                                 setToWho("chat")
-                            }}>chat</button>
+                            }}>Chat</button>
 
 
                             {
                                 clients.map(client => (
-                                    <button className="btn" onClick={() => {
+                                    <button className="btn border d-flex flex-row align-items-center overflow-hidden " onClick={() => {
                                         setToWho(client.id)
-                                    }}>{client.username}<button onClick={()=>removeClient(client)} type="button" class="btn-close" aria-label="Close"></button></button>
+                                    }}>
+                                        {client.username}
+                                        <button id="close" onClick={()=>removeClient(client)} type="button" className="btn-close ms-2 "  aria-label="Close"></button>
+                                    </button>
                                 ))
                             }
 
@@ -106,29 +112,31 @@ export default function Room() {
 
                         {/* Chat */}
 
-
-                        <div className="col-10">
+                        
+                        <ScrollToBottom className="col-12 col-sm-10 py-2 chat">
+                            
 
 
                             {
                                 chat.map(msg => (
                                     msg.toWho === toWho && <div><em>@{msg.username} : </em> {msg.msg}</div>))
                             }
+                            
+                            
 
-
-
-                        </div>
+                        </ScrollToBottom>
+                     
 
                         {/* Users */}
 
 
-                        <div id="userList" className="col-2 d-flex flex-column ">
+                        <div id="userList" className="col-sm-2 d-none d-sm-flex flex-column pt-2 ">
 
 
 
 
                             {
-                                users.map(user => (<button onClick={() => addClient( user )} className="btn">@{user.username}</button >))
+                                users.map(user => (<button onClick={() => addClient( user )} className="btn shadow-sm my-1 overflow-hidden">@{user.username}</button >))
               
                             }
 
