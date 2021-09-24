@@ -10,7 +10,7 @@ export const SocketApi = (username)=>{
 }
 
 export const Send = (msg,username)=>{
-    socket.emit("msg",{"username": username , "msg":msg})
+    socket.emit("msg",{"toWho": "chat" ,"username": username , "msg":msg})
 }
 
 export const Listen = (calback)=>{

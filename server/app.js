@@ -17,15 +17,18 @@ io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
       });
+
     socket.on('disconnect', () => {
       let nick = toString(socket.handshake.query.username)
       let index = users.indexOf(nick);
       users = users.splice(index,1)
       io.sockets.emit("users",users)
     });
+
     socket.on("msg",(msg)=>{
       socket.broadcast.emit("new-msg",msg)
     })
+    
   });
 
 server.listen(3000, () => {

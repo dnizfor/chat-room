@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import Home from "../src/pages/Home"
+import Home from "./pages/Home"
 import Room from "./pages/Room";
 
 export default function App() {
