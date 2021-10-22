@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Chat from "../assets/chat.png"
 import "./home.css"
 
+import { useDispatch } from 'react-redux'
+import { newUsername } from '../redux/usernameSlice'
+
 import {
     Redirect,
 } from "react-router-dom";
@@ -11,15 +14,18 @@ export default function Home() {
     const [id, setId] = useState("")
     const [redirect, setRedirect] = useState(false)
 
+    const dispatch = useDispatch()
+
     const changeHandler = (e) => {
         setId(e.target.value)
     }
     const submitHandler = (e) => {
+        dispatch(newUsername(id))
         setRedirect(true)
         e.preventDefault()
     }
     if (redirect === true) {
-        return <Redirect to={`/room/${id}`} />;
+        return <Redirect to={`/room`} />;
     }
     return (
         <div>

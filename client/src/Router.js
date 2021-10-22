@@ -13,7 +13,7 @@ export default function App() {
     <Router>
       <div>
         <Switch>
-          <Route path="/room/:id">
+          <Route path="/room">
             <Room />
           </Route>
           <Route  path="/">

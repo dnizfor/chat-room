@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router'
 
 import ScrollToBottom from 'react-scroll-to-bottom';
+
+import { useSelector } from 'react-redux'
 
 import "./room.css"
 
@@ -9,14 +10,13 @@ import { SocketApi, Send, Listen, Users ,Private,ListenPrivate } from '../Socket
 
 export default function Room() {
 
+    const id = useSelector((state) => state.createUsername.value).payload   
+    
     const [text, setText] = useState("")
     const [chat, setChat] = useState([])
     const [users, setUsers] = useState([])
     const [toWho, setToWho] = useState("chat")
     const [clients, setClients] = useState([])
-
-    const { id } = useParams()
-
 
     useEffect(() => {
         SocketApi(id)
